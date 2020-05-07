@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blb.dao.UserDao">
+    <select id="checkLoginName" parameterType="string" resultType="java.lang.Integer">
+        select userid from user where email=#{email};
+    </select>
+
+    <select id="login" resultType="user">
+        select * from user where email=#{email} and password=md5(#{password})
+    </select>
+    
+    <insert id="zhuce" parameterType="user">
+        insert  into user(userid,email,password,username,sex,phone)
+        values(null,#{email},md5(#{email}),#{username},#{sex},#{phone})
+    </insert>
+
+    <update id="changepwd">
+        update user set  password=md5(#{newpwd}) where userid=#{userid}
+    </update>
+</mapper>

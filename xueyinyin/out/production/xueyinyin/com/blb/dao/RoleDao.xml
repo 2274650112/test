@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blb.dao.RoleDao">
+    <select id="selectRole" resultType="role">
+        select r.roleid,r.rolename,d.deptname,group_concat(menuname separator ',') jurisdiction
+        from role r left join role_menu rm on r.roleid = rm.roleid
+                       left join menu m on m.menuid=rm.menuid
+                       left join dept d on d.deptid=r.deptid group by r.roleid
+    </select>
+    
+    <insert id="addrole" parameterType="role">
+        insert into role (roleid,rolename,deptid) values (null,#{rolename},#{deptid})
+    </insert>
+    
+    <select id="selectRoleId" parameterType="string" resultType="java.lang.Integer">
+        select role.roleid from role where rolename=#{rolename}
+    </select>
+    
+    <delete id="deleteRole" parameterType="int">
+        delete from role where roleid=#{roleid}
+    </delete>
+
+    <select id="selectRoleByid" parameterType="int" resultType="role">
+        select * from role where roleid=#{roleid}
+    </select>
+    
+    <update id="upateRole" parameterType="role">
+        update role set rolename=#{rolename},deptid=#{deptid} where roleid=#{roleid}
+    </update>
+</mapper>
